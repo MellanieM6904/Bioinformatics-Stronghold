@@ -4,10 +4,6 @@
 # in the Bioinformatics Stronghold
 # Status: INCOMPLETE
 
-# libraries
-library(dplyr)
-# libraries
-
 input <- readLines("input.txt", warn = FALSE) # Pulls data file
 
 fileModification <- function(input) {
