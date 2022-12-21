@@ -2,7 +2,7 @@
 # Name: Mellanie Martin
 # Summary: The following solves the "Consensus and Profile" Rosalind Challenge
 # in the Bioinformatics Stronghold
-# Status: INCOMPLETE
+# Status: COMPLETE
 
 input <- readLines("input.txt", warn = FALSE) # Pulls data file
 
