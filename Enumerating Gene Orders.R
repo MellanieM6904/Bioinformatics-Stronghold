@@ -4,4 +4,8 @@
 # in the Bioinformatics Stronghold
 # Status: INCOMPLETE
 
-data <- 3
+library(combinat)
+
+data <- 7
+
+print(permn(data))
