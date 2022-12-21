@@ -10,21 +10,26 @@ library(dplyr)
 
 input <- readLines("input.txt", warn = FALSE) # Pulls data file
 
-consensusProfile <- function(input) {
-  
+fileModification <- function(input) {
+
   # input file modification
   noIDs <- gsub("^>Rosalind_\\d+$", "", input) # Removes IDs
   writeLines(noIDs, "input.txt")
   noBlankLines <- readLines("input.txt")
   cat(grep("^$", noBlankLines, invert = TRUE, value = TRUE),
       file = "input.txt", sep = "\n")
-    # cat; writes to output.txt
-    # grep; "^$" removes all blank lines, invert keeps all lines that DO NOT 
-    # match the pattern, value makes it return the lines themselves instead 
-    # of the indices
+  # cat; writes to output.txt
+  # grep; "^$" removes all blank lines, invert keeps all lines that DO NOT 
+  # match the pattern, value makes it return the lines themselves instead 
+  # of the indices
   # Input file in useable form; file now ONLY contains DNA strings
   cleanedInput <- readLines("input.txt", warn = FALSE)
-  stringLen <- length(strsplit(cleanedInput[1], "")[[1]]) # Get length of DNA strings
+  return(cleanedInput)
+}
+
+profileMatrixCreation <- function(modifiedInput) {
+  
+  stringLen <- length(strsplit(modifiedInput[1], "")[[1]]) # Get length of DNA strings
   # in this challenge, all DNA strings are the same length
   
   # Make empty data frame to create the profile
@@ -36,7 +41,7 @@ consensusProfile <- function(input) {
   
   for (n in 1:stringLen) { # create as many data columns as there are letters in the DNA strings
     concatenated <- c() # create empty vector to hold concatenated string
-    for (i in cleanedInput) { # iterate through each DNA string
+    for (i in modifiedInput) { # iterate through each DNA string
       splitSeq <- strsplit(i, "")[[1]] # split i so each letter is a vector item
       # combine each letter of index n from all DNA strings
       concatenated <- c(concatenated, paste(splitSeq[n], collapse = ""))
@@ -77,7 +82,6 @@ consensusProfile <- function(input) {
       }
     }
   }
-  
   # rename rows for profile
   rowLabels <- c("A:", "C:", "G:", "T:")
   row.names(profile) <- rowLabels
@@ -86,4 +90,33 @@ consensusProfile <- function(input) {
   return(profile)
 }
 
-consensusProfile(input)
+consensusStringCreation <- function(profileMatrix) {
+  
+  consensusString <- ""
+  
+  for (column in names(profileMatrix)) {
+    highestFreqIndex <- which.max(profileMatrix[, column])
+    rowNames <- rownames(profileMatrix)
+    
+    if (rowNames[highestFreqIndex] == "A:") {
+      consensusString <- paste0(consensusString, "A")
+    }
+    if (rowNames[highestFreqIndex] == "C:") {
+      consensusString <- paste0(consensusString, "C")
+    }
+    if (rowNames[highestFreqIndex] == "G:") {
+      consensusString <- paste0(consensusString, "G")
+    }
+    if (rowNames[highestFreqIndex] == "T:") {
+      consensusString <- paste0(consensusString, "T")
+    }
+  }
+  return(consensusString)
+}
+
+printResults <- function(profileMatrix, consensusString) {
+  print(consensusString)
+  print(profileMatrix)
+}
+
+printResults(profileMatrixCreation(fileModification(input)), consensusStringCreation(profileMatrixCreation(fileModification(input))))
