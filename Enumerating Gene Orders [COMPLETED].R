@@ -2,7 +2,7 @@
 # Name: Mellanie Martin
 # Summary: The following solves the "Enumerating Gene Orders" Rosalind Challenge
 # in the Bioinformatics Stronghold
-# Status: INCOMPLETE
+# Status: COMPLETE
 
 library(combinat)
 
